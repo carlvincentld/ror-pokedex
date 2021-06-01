@@ -1,5 +1,5 @@
 class PokedexEntry < ApplicationRecord
-  POKEMON_TYPES = [ 
+  POKEMON_TYPES = [
     'Bug',
     'Dark',
     'Dragon',
@@ -39,5 +39,11 @@ class PokedexEntry < ApplicationRecord
 
   def total
     hp + attack + defense + spAtk + spDef + speed
+  end
+
+  def as_json(options)
+    options ||= {}
+    (options.methods ||= []).push(:total)
+    super(options)
   end
 end
