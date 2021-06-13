@@ -24,6 +24,7 @@ class PokedexEntry < ApplicationRecord
   validates :name, presence: true, uniqueness: { scope: :no }
   validates :type1, presence: true , inclusion: { in: POKEMON_TYPES }
   validates :type2, inclusion: { in: POKEMON_TYPES }, allow_blank: true
+  validate :type2_distinct_from_type1
 
   attribute :total
 
@@ -45,5 +46,11 @@ class PokedexEntry < ApplicationRecord
     options ||= {}
     (options.methods ||= []).push(:total)
     super(options)
+  end
+
+  def type2_distinct_from_type1
+    if type1 == type2
+      errors.add(:type2, "Type1 cannot equal Type2")
+    end
   end
 end
